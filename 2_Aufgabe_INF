@@ -1,0 +1,98 @@
+class DoublyLinkedList {
+    class Node {
+        int data;
+        Node prev, next;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    Node head, tail;
+
+    // Methode zum Hinzufügen von Elementen am Ende der Liste
+    void append(int data) {
+        Node new_node = new Node(data);
+        if (head == null) {
+            head = tail = new_node;
+        } else {
+            tail.next = new_node;
+            new_node.prev = tail;
+            tail = new_node;
+        }
+    }
+
+    // Methode zum Austauschen von zwei Elementen
+    void swap(int i, int j) {
+        if (i == j) return;
+
+        Node nodeI = head, nodeJ = head;
+        int count;
+        for (count = 0; nodeI != null && count < i; count++) {
+            nodeI = nodeI.next;
+        }
+        for (count = 0; nodeJ != null && count < j; count++) {
+            nodeJ = nodeJ.next;
+        }
+
+        if (nodeI == null || nodeJ == null) {
+            return;
+        }
+
+        if (nodeI.prev != null) {
+            nodeI.prev.next = nodeJ;
+        } else {
+            head = nodeJ;
+        }
+        if (nodeJ.prev != null) {
+            nodeJ.prev.next = nodeI;
+        } else {
+            head = nodeI;
+        }
+        if (nodeI.next != null) {
+            nodeI.next.prev = nodeJ;
+        } else {
+            tail = nodeJ;
+        }
+        if (nodeJ.next != null) {
+            nodeJ.next.prev = nodeI;
+        } else {
+            tail = nodeI;
+        }
+
+        Node temp = nodeI.prev;
+        nodeI.prev = nodeJ.prev;
+        nodeJ.prev = temp;
+        temp = nodeI.next;
+        nodeI.next = nodeJ.next;
+        nodeJ.next = temp;
+    }
+
+    // Output der Liste
+    void printList() {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        DoublyLinkedList dll = new DoublyLinkedList();
+        dll.append(10);
+        dll.append(20);
+        dll.append(30);
+        dll.append(40);
+
+        System.out.println("Ursprüngliche Liste:");
+        dll.printList();
+
+        dll.swap(1, 3);
+
+        System.out.println("Liste nach dem Tausch:");
+        dll.printList();
+    }
+}
